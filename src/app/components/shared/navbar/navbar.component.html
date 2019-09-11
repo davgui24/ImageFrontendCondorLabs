@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" [routerLink]="['/home']">All Albums</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- <h1>
+      {{'title'}} <i class="fa fa-check"></i>
+    </h1> -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/list-images']">Lits all Images <span class="sr-only">(current)</span></a>
+        </li>
+        <!-- <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li> -->
+        <!-- <li class="nav-item">
+          <a class="nav-link disabled" href="#">Disabled</a>
+        </li> -->
+      </ul>
+      <form [formGroup]="FormEntity" class="form-inline my-2 my-lg-0" (ngSubmit)="search()"> 
+        <div class="row">
+              <div class="input-group-append col-9">
+                <input class="form-control mr-sm-2" autocomplete="off" (keyup)=search() type="search" placeholder="Search" aria-label="Search" formControlName="search" id="search">
+                <input type="text" class="form-control input-2" 
+                      formControlName="date" ngbDatepicker 
+                      #date="ngbDatepicker" placeholder="aaaa-mm-dd" (keyup)=search() readonly>
+              </div>
+              <div class="col-3">
+                <button class="btn btn-outline-secondary" type="button"
+                    id="button-addon2"
+                    (click)="date.toggle();">
+                    <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                </button>
+              </div>
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" (click)="search()" >Search</button>
+      </form>
+    </div>
+  </nav>

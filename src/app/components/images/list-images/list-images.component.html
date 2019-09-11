@@ -1,0 +1,41 @@
+<app-navbar (searchString)="searchWord($event)"></app-navbar>
+<div class="scrollbar" id="style-6">
+    <div class="force-overflow">
+        <div class="container content-title">
+            <div class="jumbotron jumbotron-fluid" style="height: 100px;">
+                <div class="container">
+                    <h1 class="display-4">List of all imagess</h1>
+                    <p class="lead">Aqui encontrará las imagenes de todos los álbumes y eliminar cada uno.</p>
+                </div>
+            </div>
+        </div>
+                
+                
+        <div class="container container-img">
+            <div class="container list-container" *ngFor="let image of imagesBD">
+                <div class="card cardImage" style="height: 22rem; ;width: 18rem;">
+                    <img [src]="'http://localhost:3000/' + image.path" class="card-img-top" alt="..." style="height: 200px; width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{image.name}}</h5>
+                        <p class="card-text">{{image.description}}</p>
+                        <small> <b>Album:</b> {{image.album.name}}</small>
+                       <div class="row">
+                            <div class="col6" style="float: right; heith: 20px; cursor: pointer;" (click)="transferImage(image)">
+                                <img src="assets/icons/transfer.png" alt="" style="height: 15px; width: 15px;">
+                            </div>
+                            <br>
+                            <br>
+                            <div class="col-6" style="float: right; heith: 20px; cursor: pointer;" (click)="deleteImage(image)">
+                                <img src="assets/icons/garbage.svg" alt="" style="height: 15px; width: 15px;">
+                            </div>
+                       </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+
+
+
+

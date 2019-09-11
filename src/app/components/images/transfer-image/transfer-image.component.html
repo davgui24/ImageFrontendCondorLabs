@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+<ng-template #content let-modal>
+    <div class="card rotateInDownRight" style="width: 100%; float: left; border-radius: 5px; border: solid black 0.5px; background: rgba(77, 121, 240, 0)">
+            <div class="card-body">
+                    <h5 class="card-title">Are you sure you want to transfer the imge?  {{id}}</h5>
+                    <form [formGroup]="FormEntity">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Album</label>
+                            <select name="album" class="form-control  control-3 myselect"
+                                formControlName="album" required>
+                                <option  *ngFor="let album of newAlbum" [ngValue]="album._id">{{ album.name }}</option>
+                            </select>
+                            <span class="text-danger invalid-control"
+                                *ngIf="frmEntity().album.invalid && frmEntity().album.dirty">
+                                Required field.
+                            </span>
+                        </div>                
+                    </form>
+                    <button type="button" class="close" aria-label="Close" (click)="exit()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <button class="btn btn-primary" (click)="saveImage()">Transfer image</button>
+            </div>
+    </div>
+</ng-template>

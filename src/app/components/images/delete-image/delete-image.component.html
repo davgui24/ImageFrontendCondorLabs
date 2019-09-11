@@ -1,0 +1,12 @@
+<app-navbar></app-navbar>
+<ng-template #content let-modal>
+    <div class="card rotateInDownRight" style="width: 38rem; float: left; border-radius: 5px; border: solid black 0.5px; background: rgb(236, 113, 113)">
+            <div class="card-body">
+                    <h5 class="card-title">Are you sure you want to delete the imge?  {{id}}</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="exit()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <button class="btn btn-danger" (click)="cofirmDelete()">Delete</button>
+            </div>
+    </div>
+</ng-template>
