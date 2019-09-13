@@ -18,6 +18,7 @@ export class CreateImageComponent implements OnInit {
   id: string;
   public FormEntity: FormGroup;
   closeResult: string;
+  imgPreview: string;
   @ViewChild("content", {static: true}) content: ElementRef;
 
 
@@ -31,27 +32,31 @@ export class CreateImageComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe(params => {
           this.id = params['id'] || null;
         });
+        this.imgPreview = 'assets/images/empty.jpg';
         this.loadData();
         this.open(this.content)
         this.initForm();
+        
+        // Disable the "back" button  -------------
+        window.location.hash="no-back-button";
+        window.location.hash="Again-No-back-button" //chrome
+        window.onhashchange=function(){window.location.hash="no-back-button";}
     }
 
-    // ----------------------------------------
-
+ // Uploading albums from the database   --------------
     loadData(){
       // list albums
       this.albumsService.albumsList().subscribe(albums =>{
         this.albums = albums.albumBD;
-        console.log('Estos son los albums', this.albums);
       })
     }
 
 
-  // ---------------------------
-
+  // Validating the form fields  -----------------
   public frmEntity(){
     return this.FormEntity.controls;
   }
+
   public markAsDirty(form: FormGroup) {
     let controlKeys = Object.keys(form.controls);
     controlKeys.forEach(key => {
@@ -60,6 +65,9 @@ export class CreateImageComponent implements OnInit {
     });
   }
 
+
+
+  // start and validation of the form  ------------
   private initForm() {
     this.FormEntity = new FormGroup({
         name: new FormControl('', [
@@ -76,8 +84,8 @@ export class CreateImageComponent implements OnInit {
     });
   }
 
-      // ******************************************
-  // MODALS
+
+  // MODALS   ******************************
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -87,6 +95,7 @@ export class CreateImageComponent implements OnInit {
   }
 
 
+  // Event of closing the modal window    -----------------
   private getDismissReason(reason: any): string {
     this.router.navigate(['/gallery'], { queryParams: { id: this.id} }); 
     if (reason === ModalDismissReasons.ESC) {
@@ -98,21 +107,34 @@ export class CreateImageComponent implements OnInit {
     }
   }
 
-// *********************************
 
-  cargaImagenLogo: boolean = false;
-  _image: File;
+
+
+// Select and display image   ****************
   logo = null;
   onInputImagelogoChange(event) {
 
-      this.logo = <File>event.target.files[0];
-      console.log(this.logo);
+      if(event.target.files && event.target.files[0]){
+        this.logo = <File>event.target.files[0];
+
+        var reader = new FileReader(); 
+
+        reader.onload = (event:any) => { 
+            let url = event.target.result;                
+            this.imgPreview = `${url}`;
+          } 
+
+          reader.readAsDataURL(event.target.files[0]);
+
+    }else{
+        this.imgPreview = 'assets/images/empty.jpg';
+    }
   }
 
 
 
-// ==============================
 
+// Validation and save image  ----------------
   saveImage(){
     if(this.FormEntity.valid){
       let date = moment().format("YYYY-MM-DD");

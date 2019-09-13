@@ -4,6 +4,7 @@ import { ImagesService } from 'src/app/services/images.service';
 import {NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import swal from 'sweetalert';
+import * as moment from 'moment';
 
 
 @Component({
@@ -29,10 +30,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
    this.loadData();
+           
+    // Disable the "back" button  -------------
+    window.location.hash="no-back-button";
+    window.location.hash="Again-No-back-button" //chrome
+    window.onhashchange=function(){window.location.hash="no-back-button";}
   }
 
-  // ----------------------------------------
-
+ 
+  // Uploading albums and images from the database   --------------
   loadData(){
     // list albums
     this.albumsService.albumsList().subscribe(albums =>{
@@ -41,29 +47,30 @@ export class HomeComponent implements OnInit {
       // console.log('Estos son los albums', this.albumsBD);
     })
 
-    // -----------------------
+ 
 
-    // list images
+    // list images  ------------
     this.imagesService.imageList().subscribe(images =>{
       this.images = images;
       // console.log('Estos son las images', this.images);
     })
   }
 
-  // ----------------------------
-
+  
+  // method to open a modal window   ---------------
   openModal() {
     this.router.navigate(['home/form-album']); 
   }
 
+
+  // method to close a modal window
   goGallery(albumID: string){
-    console.log(albumID);
     this.router.navigate(['/gallery'], { queryParams: { id: albumID} }); 
   }
 
 
-  // ********************************************
-// MODAL
+
+// MODAL  *************
 
 open(content) {
   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -74,6 +81,7 @@ open(content) {
 }
 
 
+// Event of closing the modal window    -----------------
 private getDismissReason(reason: any): string {
   if (reason === ModalDismissReasons.ESC) {
     return 'by pressing ESC';
@@ -84,10 +92,8 @@ private getDismissReason(reason: any): string {
   }
 }
 
-// ********************************************
 
-
-albumselect: string;
+// Delete an album   ****************
   deleteAlbum(album){
     if(album.images.length > 0){
       swal("Error!", 'There are images associated with this album', "error");
@@ -96,17 +102,34 @@ albumselect: string;
     }
   }
 
-  // -------------------------
+
+  // search by word   -------------
   searchString: string = '';
-  searchWord(event){
-    this.searchString = event;
+  search(event){
+
+    this.searchString = JSON.parse(event).search;
+
     if(this.searchString && this.searchString.trim() != ''){
       this.albumsBD = this.albumsBD.filter((item =>{
-        return (item.name.toLowerCase().indexOf(event.toLowerCase()) > -1);
+        return (item.name.toLowerCase().indexOf(this.searchString.toLowerCase()) > -1);
       }))
     }else{
       this.albumsBD = this.albums.albumBD;
     }
   }
 
+  // search by date   -------------
+    searchDate: any;
+    searchdate(event){
+        this.searchDate = JSON.parse(event).date;
+        let date = moment(this.searchDate.year + '-' + this.searchDate.month + '-' + this.searchDate.day).format('YYYY MMMM dddd');
+        if(date && date.trim() != ''){
+          this.albumsBD = this.albumsBD.filter((item =>{
+          return (moment(item.date).format('YYYY MMMM dddd').toLowerCase().indexOf(date.toLowerCase()) > -1);
+      }));
+      }else{
+        this.albumsBD = this.albums.albumBD;
+      }
+    }
+  
 }

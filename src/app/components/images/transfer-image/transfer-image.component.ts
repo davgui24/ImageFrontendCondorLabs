@@ -33,17 +33,20 @@ export class TransferImageComponent implements OnInit {
       let object= JSON.parse(params['id']) || null;
       this.id = object.id;
       this.idAlbum = object.idAlbum;
-      console.log(this.id );
-      console.log(this.idAlbum);
     });
 
     this.loadData();
     this.open(this.content)
     this.initForm();
+
+    // Disable the "back" button  -------------
+    window.location.hash="no-back-button";
+    window.location.hash="Again-No-back-button" //chrome
+    window.onhashchange=function(){window.location.hash="no-back-button";}
   }
 
 
-  // -----------------------
+ // Uploading images and albums from the database   --------------
   loadData(){
     // list albums
     this.albumsService.albumsList().subscribe(albums =>{
@@ -60,8 +63,8 @@ export class TransferImageComponent implements OnInit {
     })
   }
 
-  // -----------------------------
 
+  // Validating the form fields  -----------------
   public frmEntity(){
     return this.FormEntity.controls;
   }
@@ -80,7 +83,7 @@ export class TransferImageComponent implements OnInit {
   }
 
 
-        // ******************************************
+ 
   // MODALS
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -91,6 +94,7 @@ export class TransferImageComponent implements OnInit {
   }
 
 
+  // Event of closing the modal window    -----------------
   private getDismissReason(reason: any): string {
     this.router.navigate(['/list-images'], { queryParams: { id: this.id} }); 
     if (reason === ModalDismissReasons.ESC) {
@@ -105,6 +109,7 @@ export class TransferImageComponent implements OnInit {
 // *********************************
 
 
+// Validation and save image  ----------------
 saveImage(){
   if(this.FormEntity.valid){
     let data = {

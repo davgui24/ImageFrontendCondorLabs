@@ -27,12 +27,16 @@ export class AlbumComponent implements OnInit {
   ngOnInit() {
     this.open(this.content)
     this.initForm();
+
+    // Disable the "back" button  -------------
+    window.location.hash="no-back-button";
+    window.location.hash="Again-No-back-button" //chrome
+    window.onhashchange=function(){window.location.hash="no-back-button";}
   }
 
 
+ // Uploading albums from the database   --------------
   loadData(){
-    // list albums
-    // this.modalService.o
     this.albumsService.albumsList().subscribe(albums =>{
       this.albums = albums;
       console.log('Estos son los albums', this.albums);
@@ -40,8 +44,7 @@ export class AlbumComponent implements OnInit {
   }
 
 
-  // ---------------------------------
-
+  // Validating the form fields  -----------------
   public frmEntity(){
     return this.FormEntity.controls;
   }
@@ -54,6 +57,8 @@ export class AlbumComponent implements OnInit {
     });
   }
 
+
+    // start and validation of the form  ------------
   private initForm() {
     this.FormEntity = new FormGroup({
         name: new FormControl('', [
@@ -70,8 +75,8 @@ export class AlbumComponent implements OnInit {
 
 
 
-    // ******************************************
-  // MODALS
+
+  // MODALS   ******************************
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -81,6 +86,7 @@ export class AlbumComponent implements OnInit {
   }
 
 
+  // Event of closing the modal window    -----------------
   private getDismissReason(reason: any): string {
     this.router.navigate(['../']); 
     if (reason === ModalDismissReasons.ESC) {
@@ -92,9 +98,9 @@ export class AlbumComponent implements OnInit {
     }
   }
 
-// *********************************
 
 
+// Validation and save album  ----------------
   saveAlbum(){
     if(this.FormEntity.valid){
       let date = moment().format("YYYY-MM-DD");
@@ -114,8 +120,6 @@ export class AlbumComponent implements OnInit {
     }else{
       this.markAsDirty(this.FormEntity);
     }
-
-    // this.router.navigate(['/home']); 
   }
 
 

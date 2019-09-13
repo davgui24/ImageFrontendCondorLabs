@@ -26,10 +26,14 @@ export class DeleteAlbumComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.id = params['id'] || null;
     });
-   
+           
+    // Disable the "back" button  -------------
+    window.location.hash="no-back-button";
+    window.location.hash="Again-No-back-button" //chrome
+    window.onhashchange=function(){window.location.hash="no-back-button";}
   }
 
-      // ******************************************
+
   // MODALS
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -40,6 +44,7 @@ export class DeleteAlbumComponent implements OnInit {
   }
 
 
+    // Event of closing the modal window    -----------------
   private getDismissReason(reason: any): string {
     this.router.navigate(['../']); 
     if (reason === ModalDismissReasons.ESC) {
@@ -52,23 +57,21 @@ export class DeleteAlbumComponent implements OnInit {
   }
 
 // *********************************
-
   cofirmDelete(){
       this.albumsService.albumDelete(this.id).subscribe(albumDelete =>{
-          console.log('Respuesta', albumDelete);
           this.modalService.dismissAll();
             if(albumDelete.ok){
-              console.log('La respuesta',albumDelete.ok);
               swal("Good!", albumDelete.message, "success");
               this.modalService.dismissAll();
             }else{
-              console.log('La respuesta',albumDelete.ok);
               swal("Error!", albumDelete.message, "error") ;
               this.modalService.dismissAll();
             }
      })
   }
 
+
+  // -------------------
   exit(){
     this.modalService.dismissAll();
   }

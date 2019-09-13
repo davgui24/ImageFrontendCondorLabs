@@ -18,6 +18,8 @@ export class GalleryComponent implements OnInit {
   galleryEmpty = true;
   id: string;
   imageDatail: string;
+  valueButton: boolean = false;
+  details: any;
 
   constructor(private albumsService: AlbumsService,
     private imagesService: ImagesService,
@@ -26,16 +28,21 @@ export class GalleryComponent implements OnInit {
     private activatedRoute: ActivatedRoute,) { }
 
   ngOnInit() {
+    // receiving url id ---------------
     this.activatedRoute.queryParams.subscribe(params => {
       this.id = params['id'] || null;
     });
     this.loadData();
-    // this.imageDatail = '/assets/images/empty.jpg';
+
+    // Disable the "back" button  -------------
+    window.location.hash="no-back-button";
+    window.location.hash="Again-No-back-button" //chrome
+    window.onhashchange=function(){window.location.hash="no-back-button";}
   }
 
 
   // -------------------------------------
- valueButton: boolean = false;
+
   loadData(){
     // list albums
     this.albumsService.albumsList().subscribe((albums) =>{
@@ -49,14 +56,10 @@ export class GalleryComponent implements OnInit {
             // console.log('Estos son las images', this.images);
 
 
-
-
-              // -----------------------
+            // finding the images according to the albums and classifying them    ------------------
                 this.albums.forEach(album => {
                     album.images.forEach(image => {
-
                         if(this.id == album._id){
-
                           if(album.images.length>0){
                             this.galleryEmpty = true;
                             this.images.forEach(img => {
@@ -67,16 +70,11 @@ export class GalleryComponent implements OnInit {
                           }else{
                             this.galleryEmpty = false;
                           }
-                      
                         }
-
-                      
-          
                     });
-
                 });
 
-
+                // Validating empty data to load static images  ----------
                 if( this.imagesAlbum.length <= 0 || this.albums.length <= 0){
                   const empty = {
                     name: '',
@@ -96,27 +94,20 @@ export class GalleryComponent implements OnInit {
                   this.imagesAlbum.splice(0, 1);
                   this.valueButton = true;
                 }
-                
-                // console.log('FIRST', this.imageAlbumFirst);
-                // console.log('FINAL', this.imagesAlbum);
-
           })
   
     })
   }
 
   
-//  ------------------------------
- details: any;
+  // Creating the object of the image details   --------------
   seeDetails(image: any){
     this.details = image;
     this.imageDatail = 'http://localhost:3000/' + this.details.path;
   }
 
-  // --------------------
-
+  // Activate form to add an image   -------
   addImage(){
-    console.log(this.id);
    this.router.navigate(['../add-image'], { queryParams: { id: this.id} });
   }
 }

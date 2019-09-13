@@ -11,22 +11,16 @@ export class NavbarComponent implements OnInit {
 
   public FormEntity: FormGroup;
   @Output() searchString = new EventEmitter<string>();
+  @Output() searchdate= new EventEmitter<string>();
 
   constructor() { }
 
   ngOnInit() {
     this.initForm();
-
-    // let search = document.querySelector("search");
-    // window.document.addEventListener("keydown", function (event) {
-    //   console.log(event.key);
-
-    //  })
   }
 
-  // ---------------------------------------
-
-
+ 
+  // start and validation of the form  ------------
   private initForm() {
     this.FormEntity = new FormGroup({
       search: new FormControl('', [
@@ -41,9 +35,13 @@ export class NavbarComponent implements OnInit {
 
 
 
-  // ----------------------------------
-
+  // sending the form in an event for a parent component   ------------
   public search(){
-    this.searchString.emit(this.FormEntity.value.search);
+    this.searchString.emit(JSON.stringify(this.FormEntity.value));
+  }
+
+  // sending the form in an event for a parent component   ------------
+  public searchDate(){
+    this.searchdate.emit(JSON.stringify(this.FormEntity.value));
   }
 }
