@@ -120,13 +120,12 @@ saveImage(){
     this.imagesService.imageTransfer(this.id, data).subscribe(imageTranf =>{
       if(imageTranf.ok){
         swal("Good!", imageTranf.message, "success");
-        this.router.navigate(['/list-images']); 
+        this.modalService.dismissAll();
       }else{
         swal("Error!", imageTranf.message, "error");
-        this.router.navigate(['/list-images']); 
+        this.modalService.dismissAll();
       }
     })
-    this.modalService.dismissAll();
   }else{
     this.markAsDirty(this.FormEntity);
   }

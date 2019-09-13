@@ -38,9 +38,9 @@ export class CreateImageComponent implements OnInit {
         this.initForm();
         
         // Disable the "back" button  -------------
-        window.location.hash="no-back-button";
-        window.location.hash="Again-No-back-button" //chrome
-        window.onhashchange=function(){window.location.hash="no-back-button";}
+        // window.location.hash="no-back-button";
+        // window.location.hash="Again-No-back-button" //chrome
+        // window.onhashchange=function(){window.location.hash="no-back-button";}
     }
 
  // Uploading albums from the database   --------------

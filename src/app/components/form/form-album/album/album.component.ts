@@ -29,9 +29,9 @@ export class AlbumComponent implements OnInit {
     this.initForm();
 
     // Disable the "back" button  -------------
-    window.location.hash="no-back-button";
-    window.location.hash="Again-No-back-button" //chrome
-    window.onhashchange=function(){window.location.hash="no-back-button";}
+    // window.location.hash="no-back-button";
+    // window.location.hash="Again-No-back-button" //chrome
+    // window.onhashchange=function(){window.location.hash="no-back-button";}
   }
 
 
@@ -39,7 +39,6 @@ export class AlbumComponent implements OnInit {
   loadData(){
     this.albumsService.albumsList().subscribe(albums =>{
       this.albums = albums;
-      console.log('Estos son los albums', this.albums);
     })
   }
 
@@ -86,17 +85,17 @@ export class AlbumComponent implements OnInit {
   }
 
 
-  // Event of closing the modal window    -----------------
-  private getDismissReason(reason: any): string {
-    this.router.navigate(['../']); 
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
+     // Event of closing the modal window    -----------------
+     private getDismissReason(reason: any): string {
+      this.router.navigate(['../']); 
+      if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+      } else {
+        return  `with: ${reason}`;
+      }
     }
-  }
 
 
 
@@ -107,9 +106,9 @@ export class AlbumComponent implements OnInit {
       let params = {name: this.FormEntity.value.name, description: this.FormEntity.value.description, date};
       this.ngOnInit();
       this.albumsService.albumCreate(params).subscribe(albumSave =>{
-        console.log('Album guardado', albumSave);
         if(albumSave.ok){
           swal("Good!", albumSave.message, "success");
+          this.router.navigate(['../']);
           this.modalService.dismissAll();
         }else{
           swal("Error!", albumSave.message, "error");
