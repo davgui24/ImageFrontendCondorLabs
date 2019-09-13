@@ -148,7 +148,6 @@ export class CreateImageComponent implements OnInit {
       console.log('Resultado', params);
         this.ngOnInit();
         this.imagesService.imageCreate(formData).subscribe(imageSave =>{
-          console.log('Album guardado', imageSave);
           if(imageSave.ok){
             swal("Good!", imageSave.message, "success");
             this.modalService.dismissAll();

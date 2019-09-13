@@ -123,6 +123,8 @@ private getDismissReason(reason: any): string {
     searchdate(event){
         this.searchDate = JSON.parse(event).date;
         let date = moment(this.searchDate.year + '-' + this.searchDate.month + '-' + this.searchDate.day).format('YYYY MMMM dddd');
+        console.log('BD', moment(this.albums.albumBD[0].date).format('YYYY MMMM dddd'));
+        console.log('BD', date );
         if(date && date.trim() != ''){
           this.albumsBD = this.albumsBD.filter((item =>{
           return (moment(item.date).format('YYYY MMMM dddd').toLowerCase().indexOf(date.toLowerCase()) > -1);
